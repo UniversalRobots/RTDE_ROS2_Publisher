@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ur_rtde_publisher</name>
+  <version>0.0.1</version>
+  <description>Standalone RTDE publisher</description>
+
+  <author email="sergi.romero-valderas@teradyne-robotics.com">Sergi Romero</author>
+  <maintainer email="ros@universal-robots.com">Universal Robots A/S</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>example_interfaces</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>ur_client_library</depend>
+  <depend>ament_index_cpp</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>builtin_interfaces</depend>
+
+  <depend>yaml-cpp</depend>
+
+
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>rclcpp</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
