@@ -30,7 +30,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include <ur_client_library/rtde/rtde_client.h>
-#include "ur_rtde_publisher/publisher.hpp"
+#include "ur_rtde_publisher/rtde_publisher.hpp"
 #include "ament_index_cpp/get_package_share_directory.hpp"
 #include <ur_client_library/log.h>
 #include <ur_client_library/types.h>
@@ -62,7 +62,7 @@ public:
   explicit RtdePublisherNode(const rclcpp::NodeOptions& options);
 
   /**
-   * @brief Destructor of RtdeManager.
+   * @brief Destructor of RtdePublisherNode.
    * It reads the last data from the threat before removing the object.
    */
   ~RtdePublisherNode();
@@ -72,9 +72,10 @@ public:
   RtdePublisherNode& operator=(const RtdePublisherNode&) = delete;
 
   /**
-   * @brief Performs common node initialization.
+   * @brief Configure the node.
+   * @return true if configuration succeeds, false otherwise.
    */
-  void initialize();
+  bool configure();
 
   /**
    * @brief Load and validate the parameters used by the node.
@@ -101,7 +102,7 @@ public:
 
 private:
   /// @brief Helper that loads YAML mapping and creates ROS publishers per RTDE variable/group.
-  std::unique_ptr<Publisher> publisher_;
+  std::unique_ptr<RTDEPublisher> rtde_publisher_;
 
   /// @brief Recipe (list of RTDE output keys) requested to the robot and published by this node.
   std::vector<std::string> output_recipe_;
@@ -111,6 +112,9 @@ private:
 
   /// @brief RTDE frequency for getting data.
   int rtde_frequency_;
+
+  /// @brief TF prefix for the frame IDs published.
+  std::string tf_prefix_;
 
   /// @brief Keys actually created and active after validating with the YAML mapping.
   std::vector<std::string> effective_keys_;

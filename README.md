@@ -1,6 +1,6 @@
 # ur_rtde_publisher
 
-A ROS 2 package that provides a real-time RTDE-based publisher for Universal Robots manipulators. The node connects to a robot's IP via UR’s RTDE protocol, retrieves selected robot state variables (such as robot mode, safety status and timestamps), and exposes them as ROS 2 topics.
+A ROS 2 package that provides a RTDE (Real Time Data Exchange) publisher for Universal Robots manipulators. The node connects to a robot's IP via UR’s [RTDE protocol](https://docs.universal-robots.com/tutorials/communication-protocol-tutorials/rtde-guide.html), retrieves selected robot state variables (such as robot mode, safety status and timestamps), and exposes them as ROS 2 topics.
 
 ## Architecture (overview)
 

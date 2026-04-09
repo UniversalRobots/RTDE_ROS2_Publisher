@@ -27,9 +27,10 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE. -->
 
 <launch>
-  <arg name="robot_ip" default="none"/>
-  <arg name="output_recipe" default=""/>
+  <arg name="robot_ip" default=""/>
+  <arg name="output_recipe" default="[]"/>
   <arg name="rtde_frequency" default="500"/>
+  <arg name="tf_prefix" default=""/>
 
   <node
     pkg="ur_rtde_publisher"
@@ -40,5 +41,6 @@ POSSIBILITY OF SUCH DAMAGE. -->
     <param name="robot_ip" value="$(var robot_ip)"/>
     <param name="output_recipe" value="$(var output_recipe)"/>
     <param name="rtde_frequency" value="$(var rtde_frequency)"/>
+    <param name="tf_prefix" value="$(var tf_prefix)"/>
   </node>
 </launch>

@@ -30,7 +30,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include "ur_client_library/rtde/rtde_client.h"
-#include "ur_rtde_publisher/converter.hpp"
+#include "ur_rtde_publisher/rtde_converter.hpp"
 #include <geometry_msgs/msg/twist_stamped.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/accel_stamped.hpp>
@@ -48,6 +48,7 @@
 #include <example_interfaces/msg/byte_multi_array.hpp>
 #include <ur_dashboard_msgs/msg/robot_mode.hpp>
 #include <ur_dashboard_msgs/msg/safety_mode.hpp>
+#include <ur_dashboard_msgs/msg/safety_status.hpp>
 #include <example_interfaces/msg/int32_multi_array.hpp>
 #include <example_interfaces/msg/float64_multi_array.hpp>
 #include <sensor_msgs/msg/temperature.hpp>
@@ -67,6 +68,7 @@ struct VariableConfig
   std::string rtde_type;
   std::string output_type;
   std::string topic;
+  std::string frame_id;
 };
 
 /**
@@ -76,22 +78,23 @@ struct ActiveVariable
 {
   std::string name;
   VariableConfig config;
-  rclcpp::PublisherBase::SharedPtr publisher;
+  std::function<void(const urcl::rtde_interface::DataPackage&, const rclcpp::Time&)> publish;
 };
 
 /**
  * @brief Loads the YAML mapping, creates ROS publishers on demand for a given recipe,
  *        and publishes fields extracted from UR RTDE data packages.
  */
-class Publisher
+class RTDEPublisher
 {
 public:
   /**
    * @brief Constructor.
    * @param node Reference to the ROS2 node.
    * @param config_path Path to the YAML mapping file ('rtde_map.yaml').
+   * @param tf_prefix Prefix to add to the frame_id.
    */
-  Publisher(rclcpp::Node& node, const std::string& config_path);
+  RTDEPublisher(rclcpp::Node& node, const std::string& config_path, const std::string& tf_prefix);
 
   /**
    * @brief Create publishers for the variables specified by the recipe.
@@ -102,14 +105,22 @@ public:
   /**
    * @brief Publish all active fields extracted from the given RTDE package.
    * @param pkg UR RTDE data package (UR Client Library).
+   * @param packet_time Time when RTDE returned data.
    */
-  void publish(const urcl::rtde_interface::DataPackage& pkg);
+  void publish(const urcl::rtde_interface::DataPackage& pkg, rclcpp::Time& packet_time);
 
   /**
    * @brief Get the list of effective keys activated after applying the recipe.
    * @return A copy of active variable names (keys of 'active_variables_').
    */
   const std::vector<std::string> effective_keys() const;
+
+  /**
+   * @brief Select the appropriate QoS profile for a given RTDE variable.
+   * @param name RTDE variable name.
+   * @return QoS profile to be used for the corresponding ROS publisher.
+   */
+  rclcpp::QoS getQoS(const std::string& name);
 
 private:
   /// @brief Reference to the ROS2 node used for creating publishers and logging.
@@ -121,25 +132,30 @@ private:
   /// @brief Active subset after applying the recipe (name -> config).
   std::vector<ActiveVariable> active_variables_;
 
+  /// @brief Unordered Set to ensure no duplicated variables names are used.
+  std::unordered_set<std::string> seen_vars;
+
   /**
    * @brief Load and validate the mapping YAML, filling 'all_variables_'.
+   * @param config_path Path where the yaml file is located.
+   * @param tf_prefix Prefix to add to each frame_id.
    */
-  void loadConfig(const std::string& config_path);
+  void loadConfig(const std::string& config_path, const std::string& tf_prefix);
 
   /**
    * @brief Create ROS2 publishers for all 'active_variables_'.
-   * @details Uses 'SensorDataQoS' by default.
+   * @return true if it successfully creates the publisher, false otherwise.
    */
-  void createPublisher(ActiveVariable& av);
+  bool createPublisher(ActiveVariable& av);
 
   /**
    * @brief Publish a single variable by reading from the RTDE package and converting to its ROS type.
    * @param var_name RTDE variable name.
    * @param pkg UR RTDE package to extract data from.
    */
-  void publishVariable(const ActiveVariable& av, const urcl::rtde_interface::DataPackage& pkg);
+  void publishVariable(const ActiveVariable& av, const urcl::rtde_interface::DataPackage& pkg,
+                       rclcpp::Time& packet_time);
 
-private:
   /**
    * @brief Expand a variable pattern with range (e.g., "var_<0-5>") into individual variables.
    * @param pattern The pattern string.

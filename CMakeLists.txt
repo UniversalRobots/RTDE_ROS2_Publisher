@@ -5,22 +5,22 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
+find_package(ament_index_cpp REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(ur_client_library REQUIRED)
-find_package(yaml-cpp REQUIRED)
-find_package(ament_index_cpp REQUIRED)
 find_package(tf2 REQUIRED)
-find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(ur_client_library REQUIRED)
 find_package(ur_dashboard_msgs REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 add_library(${PROJECT_NAME}_lib
-  src/publisher.cpp
-  src/converter.cpp
+  src/rtde_publisher.cpp
+  src/rtde_converter.cpp
   src/rtde_publisher_node.cpp 
 )
 target_include_directories(${PROJECT_NAME}_lib PUBLIC
@@ -47,8 +47,8 @@ add_executable(ur_rtde_publisher_node
 )
 target_link_libraries(ur_rtde_publisher_node PUBLIC
   ${PROJECT_NAME}_lib
-  ament_index_cpp::ament_index_cpp
-  rclcpp::rclcpp
+  # ament_index_cpp::ament_index_cpp
+  # rclcpp::rclcpp
 )
 
 install(TARGETS ${PROJECT_NAME}_lib ur_rtde_publisher_node

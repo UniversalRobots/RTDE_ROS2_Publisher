@@ -33,26 +33,13 @@ using namespace std::chrono_literals;
 namespace ur_rtde_publisher
 {
 
-void RtdePublisherNode::initialize()
+RtdePublisherNode::RtdePublisherNode(const rclcpp::NodeOptions& options)
+  : rclcpp::Node("ur_rtde_publisher_node", options)
 {
-  if (!loadParameters())
-    return;
-  if (!initPublisher())
-    return;
-  if (!startRtde())
-    return;
-
-  RCLCPP_INFO(get_logger(), "RTDE publisher node initialized successfully");
-}
-
-RtdePublisherNode::RtdePublisherNode(const rclcpp::NodeOptions& options) : rclcpp::Node("rtde_publisher_node", options)
-{
-  initialize();
 }
 
 RtdePublisherNode::RtdePublisherNode() : rclcpp::Node("ur_rtde_publisher_node")
 {
-  initialize();
 }
 
 RtdePublisherNode::~RtdePublisherNode()
@@ -63,6 +50,11 @@ RtdePublisherNode::~RtdePublisherNode()
   }
 }
 
+bool RtdePublisherNode::configure()
+{
+  return loadParameters() && initPublisher();
+}
+
 bool RtdePublisherNode::loadParameters()
 {
   try {
@@ -70,9 +62,10 @@ bool RtdePublisherNode::loadParameters()
     output_recipe_ = declare_parameter<std::vector<std::string>>("output_recipe");
     robot_ip_ = declare_parameter<std::string>("robot_ip");
     rtde_frequency_ = declare_parameter<int>("rtde_frequency", 500);
+    tf_prefix_ = declare_parameter<std::string>("tf_prefix", "");
 
     // Verify parameters
-    if (output_recipe_.empty() || output_recipe_[0] == "none" || robot_ip_ == "none") {
+    if (output_recipe_.empty() || robot_ip_.empty()) {
       std::ostringstream oss;
 
       oss << "\033[1;31m"
@@ -86,6 +79,19 @@ bool RtdePublisherNode::loadParameters()
       RCLCPP_ERROR(this->get_logger(), "%s", oss.str().c_str());
       return false;
     }
+
+    if (rtde_frequency_ <= 0 || rtde_frequency_ > 500) {
+      RCLCPP_ERROR(get_logger(), "Invalid rtde_frequency: %d Hz. Supported RTDE range is 1–500 Hz.", rtde_frequency_);
+      return false;
+    }
+
+    if (rtde_frequency_ > 125) {
+      RCLCPP_WARN(get_logger(),
+                  "rtde_frequency set to %d Hz. Note: CB3 controllers support up to ~125 Hz. "
+                  "If running on a CB3 robot, this configuration may fail.",
+                  rtde_frequency_);
+    }
+
     return true;
 
   } catch (const std::exception& e) {
@@ -104,11 +110,11 @@ bool RtdePublisherNode::initPublisher()
     std::filesystem::path config_path = package_share_dir.string() + "/config/rtde_map.yaml";
 
     // Initialize publisher
-    publisher_ = std::make_unique<Publisher>(*this, config_path.string());
+    rtde_publisher_ = std::make_unique<RTDEPublisher>(*this, config_path.string(), tf_prefix_);
 
     // Create publishers based on output_recipe and config
-    publisher_->createPublishersForRecipe(output_recipe_);
-    effective_keys_ = publisher_->effective_keys();
+    rtde_publisher_->createPublishersForRecipe(output_recipe_);
+    effective_keys_ = rtde_publisher_->effective_keys();
 
     if (effective_keys_.empty()) {
       RCLCPP_ERROR(get_logger(), "No valid RTDE keys after applying recipe and mapping");
@@ -181,8 +187,10 @@ void RtdePublisherNode::spinOnce()
     return;
   }
 
+  rclcpp::Time packet_time = this->now();
+
   try {
-    publisher_->publish(*pkg_);
+    rtde_publisher_->publish(*pkg_, packet_time);
 
   } catch (const std::exception& e) {
     RCLCPP_ERROR_THROTTLE(this->get_logger(), *this->get_clock(), 3000, "Publisher failed to publish RTDE package: %s",
@@ -197,6 +205,11 @@ int main(int argc, char* argv[])
 {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<ur_rtde_publisher::RtdePublisherNode>();
+  if (!node->configure() || !node->startRtde()) {
+    RCLCPP_FATAL(node->get_logger(), "Failed to start RTDE publisher");
+    return 1;
+  }
+  RCLCPP_INFO(node->get_logger(), "RTDE publisher node initialized successfully");
   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;

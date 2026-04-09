@@ -38,7 +38,6 @@ rtde_variables:
       - "encoder1_raw"
       - "tool_output_voltage"
       - "time_scale_source"
-      - "safety_status"
 
   BOOL_to_BOOL:
     rtde_type: "BOOL"
@@ -56,12 +55,14 @@ rtde_variables:
   VECTOR3D_to_GeometryMsgVector3:
     rtde_type: "VECTOR3D"
     output_type: "geometry_msgs/Vector3Stamped"
+    frame_id: "base"
     variables:
       - "target_gravity"
 
   VECTOR6D_to_GeometryMsgTwist:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/TwistStamped"
+    frame_id: "tool0_controller"
     variables:
       - "actual_TCP_speed"
       - "target_TCP_speed"
@@ -69,6 +70,7 @@ rtde_variables:
   VECTOR6D_to_GeometryMsgWrench:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/WrenchStamped"
+    frame_id: "tool0_controller"
     variables:
       - "actual_TCP_force"
       - "ft_raw_wrench"
@@ -77,6 +79,7 @@ rtde_variables:
   VECTOR6D_to_GeometryMsgAccel:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/AccelStamped"
+    frame_id: "tool0_controller"
     variables:
       - "actual_TCP_acceleration"
       - "target_TCP_acceleration"
@@ -84,6 +87,7 @@ rtde_variables:
   VECTOR6D_to_GeometryMsgPose:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/PoseStamped"
+    frame_id: "tool0_controller"
     variables:
       - "actual_TCP_pose"
       - "target_TCP_pose"
@@ -92,18 +96,21 @@ rtde_variables:
   VECTOR3D_to_GeometryMsgAccel:
     rtde_type: "VECTOR3D"
     output_type: "geometry_msgs/AccelStamped"
+    frame_id: "tool0_controller"
     variables:
       - "actual_tool_accelerometer"
 
   VECTOR3D_to_GeometryMsgTwist:
     rtde_type: "VECTOR3D"
     output_type: "geometry_msgs/TwistStamped"
+    frame_id: "base"
     variables:
       - "elbow_velocity"
 
   VECTOR3D_to_GeometryMsgPoint:
     rtde_type: "VECTOR3D"
     output_type: "geometry_msgs/PointStamped"
+    frame_id: "base"
     variables:
       - "elbow_position"
       - "payload_cog"
@@ -111,6 +118,7 @@ rtde_variables:
   VECTOR6D_to_GeometryMsgInertia:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/InertiaStamped"
+    frame_id: "base"
     variables:
       - "payload_inertia"
 
@@ -198,3 +206,9 @@ rtde_variables:
     output_type: "ur_dashboard_msgs/SafetyMode"
     variables:
       - "safety_mode"
+
+  INT32_to_SAFETY_STATUS:
+    rtde_type: "INT32"
+    output_type: "ur_dashboard_msgs/SafetyStatus"
+    variables:
+      - "safety_status"

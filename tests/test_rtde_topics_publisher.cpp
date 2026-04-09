@@ -227,10 +227,15 @@ protected:
   void SetUp()
   {
     rclcpp::NodeOptions options;
-    options.parameter_overrides(
-        { { "robot_ip", g_ROBOT_IP }, { "rtde_frequency", 500 }, { "output_recipe", OUTPUT_RECIPE_VECTOR } });
+    options.parameter_overrides({ { "robot_ip", g_ROBOT_IP },
+                                  { "rtde_frequency", 500 },
+                                  { "output_recipe", OUTPUT_RECIPE_VECTOR },
+                                  { "tf_prefix", "test" } });
 
     node_ = std::make_shared<RtdePublisherNode>(options);
+
+    ASSERT_TRUE(node_->configure()) << "Failed to configure RTDE publisher node";
+    ASSERT_TRUE(node_->startRtde()) << "Failed to start RTDE publisher node";
 
     executor_.add_node(node_);
     executor_.spin_some();
