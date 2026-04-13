@@ -1,4 +1,4 @@
-name: Kilted Binary Main
+name: Kilted Binary Testing
 on:
   workflow_dispatch:
   pull_request:
@@ -12,7 +12,7 @@ on:
     - cron: '17 6 * * *'
 
 jobs:
-  kilted_binary_main:
+  kilted_binary_testing:
     uses: ./.github/workflows/reusable_ici.yml
     with:
       ros_distro: kilted
