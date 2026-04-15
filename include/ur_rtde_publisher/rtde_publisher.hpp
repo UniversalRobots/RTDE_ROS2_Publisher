@@ -115,13 +115,6 @@ public:
    */
   const std::vector<std::string> effective_keys() const;
 
-  /**
-   * @brief Select the appropriate QoS profile for a given RTDE variable.
-   * @param name RTDE variable name.
-   * @return QoS profile to be used for the corresponding ROS publisher.
-   */
-  rclcpp::QoS getQoS(const std::string& name);
-
 private:
   /// @brief Reference to the ROS2 node used for creating publishers and logging.
   rclcpp::Node& node_;

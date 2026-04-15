@@ -43,12 +43,10 @@ target_link_libraries(${PROJECT_NAME}_lib PUBLIC
 )
 
 add_executable(ur_rtde_publisher_node
-  src/rtde_publisher_node.cpp
+  src/rtde_publisher_main.cpp
 )
 target_link_libraries(ur_rtde_publisher_node PUBLIC
   ${PROJECT_NAME}_lib
-  # ament_index_cpp::ament_index_cpp
-  # rclcpp::rclcpp
 )
 
 install(TARGETS ${PROJECT_NAME}_lib ur_rtde_publisher_node
@@ -65,10 +63,6 @@ install(DIRECTORY config
 
 if (BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
-
-  target_compile_definitions(${PROJECT_NAME}_lib
-    PRIVATE UR_RTDE_PUBLISHER_BUILD_TESTING
-  )
 
   ament_add_gtest(rtde_topics_publisher_test
     tests/test_rtde_topics_publisher.cpp

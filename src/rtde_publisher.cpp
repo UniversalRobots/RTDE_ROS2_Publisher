@@ -49,7 +49,6 @@ void RTDEPublisher::loadConfig(const std::string& config_path, const std::string
 
     std::string rtde_type;
     std::string output_type;
-    std::string frame_id;
     YAML::Node variables;
 
     try {
@@ -67,17 +66,24 @@ void RTDEPublisher::loadConfig(const std::string& config_path, const std::string
       output_type = group_config["output_type"].as<std::string>();
       variables = group_config["variables"];
 
-      if (group_config["frame_id"]) {
-        frame_id = group_config["frame_id"].as<std::string>();
-      }
-
     } catch (const std::exception& e) {
       RCLCPP_ERROR(node_.get_logger(), "%s", e.what());
       continue;
     }
 
     for (const auto& var_node : variables) {
-      std::string var_pattern = var_node.as<std::string>();
+      std::string var_pattern;
+      std::string frame_id;
+
+      if (var_node.IsMap()) {
+        var_pattern = var_node["name"].as<std::string>();
+        frame_id = var_node["frame_id"].as<std::string>();
+      } else if (var_node.IsScalar()) {
+        var_pattern = var_node.as<std::string>();
+      } else {
+        RCLCPP_ERROR(node_.get_logger(), "Unsupported variable format");
+        continue;
+      }
       auto expanded_vars = expandRange(var_pattern);
 
       for (const auto& var_name : expanded_vars) {
@@ -164,24 +170,9 @@ void RTDEPublisher::createPublishersForRecipe(const std::vector<std::string>& re
   }
 }
 
-rclcpp::QoS RTDEPublisher::getQoS(const std::string& name)
-{
-  static const std::array<std::string, 5> state_vars = { "robot_mode", "safety_mode", "safety_status", "tool_mode",
-                                                         "runtime_state" };
-
-  for (const auto& key : state_vars) {
-    if (name.find(key) != std::string::npos) {
-      // msgs are not lost, late subscribers receive the last known state and only the lates state is relevant
-      return rclcpp::QoS(1).reliable().transient_local();
-    }
-  }
-  // Volatile durability (no history for late subscribers) and if a msgs is lost it ignores it.
-  return rclcpp::SensorDataQoS();
-}
-
 bool RTDEPublisher::createPublisher(ActiveVariable& av)
 {
-  rclcpp::QoS qos = getQoS(av.name);
+  rclcpp::QoS qos = rclcpp::SensorDataQoS();
 
   const std::string name = av.name;
   const std::string frame = av.config.frame_id;

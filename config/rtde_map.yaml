@@ -55,72 +55,80 @@ rtde_variables:
   VECTOR3D_to_GeometryMsgVector3:
     rtde_type: "VECTOR3D"
     output_type: "geometry_msgs/Vector3Stamped"
-    frame_id: "base"
     variables:
-      - "target_gravity"
+      - name: "target_gravity"
+        frame_id: "base"
 
   VECTOR6D_to_GeometryMsgTwist:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/TwistStamped"
-    frame_id: "tool0_controller"
     variables:
-      - "actual_TCP_speed"
-      - "target_TCP_speed"
+      - name: "actual_TCP_speed"
+        frame_id: "tool0_controller"
+      - name: "target_TCP_speed"
+        frame_id: "tool0_controller"
 
   VECTOR6D_to_GeometryMsgWrench:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/WrenchStamped"
-    frame_id: "tool0_controller"
+
     variables:
-      - "actual_TCP_force"
-      - "ft_raw_wrench"
-      - "wrench_calc_from_currents"
+      - name: "actual_TCP_force"
+        frame_id: "tool0_controller"
+      - name: "ft_raw_wrench"
+        frame_id: "tool0_controller"
+      - name: "wrench_calc_from_currents"
+        frame_id: "tool0_controller"
 
   VECTOR6D_to_GeometryMsgAccel:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/AccelStamped"
-    frame_id: "tool0_controller"
     variables:
-      - "actual_TCP_acceleration"
-      - "target_TCP_acceleration"
+      - name: "actual_TCP_acceleration"
+        frame_id: "tool0_controller"
+      - name: "target_TCP_acceleration"
+        frame_id: "tool0_controller"
 
   VECTOR6D_to_GeometryMsgPose:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/PoseStamped"
-    frame_id: "tool0_controller"
     variables:
-      - "actual_TCP_pose"
-      - "target_TCP_pose"
-      - "tcp_offset"
+      - name: "actual_TCP_pose"
+        frame_id: "tool0_controller"
+      - name: "target_TCP_pose"
+        frame_id: "tool0_controller"
+      - name: "tcp_offset"
+        frame_id: "tool0_controller"
 
   VECTOR3D_to_GeometryMsgAccel:
     rtde_type: "VECTOR3D"
     output_type: "geometry_msgs/AccelStamped"
-    frame_id: "tool0_controller"
     variables:
-      - "actual_tool_accelerometer"
+      - name: "actual_tool_accelerometer"
+        frame_id: "tool0_controller"
 
   VECTOR3D_to_GeometryMsgTwist:
     rtde_type: "VECTOR3D"
     output_type: "geometry_msgs/TwistStamped"
-    frame_id: "base"
     variables:
-      - "elbow_velocity"
+      - name: "elbow_velocity"
+        frame_id: "base"
 
   VECTOR3D_to_GeometryMsgPoint:
     rtde_type: "VECTOR3D"
     output_type: "geometry_msgs/PointStamped"
-    frame_id: "base"
     variables:
-      - "elbow_position"
-      - "payload_cog"
+      - name: "elbow_position"
+        frame_id: "base"
+      - name: "payload_cog"
+        frame_id: "base"
 
   VECTOR6D_to_GeometryMsgInertia:
     rtde_type: "VECTOR6D"
     output_type: "geometry_msgs/InertiaStamped"
-    frame_id: "base"
     variables:
-      - "payload_inertia"
+      - name: "payload_inertia"
+        frame_id: "base"
 
   DOUBLE_to_Temperature:
     rtde_type: "DOUBLE"

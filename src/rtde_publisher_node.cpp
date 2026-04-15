@@ -85,13 +85,6 @@ bool RtdePublisherNode::loadParameters()
       return false;
     }
 
-    if (rtde_frequency_ > 125) {
-      RCLCPP_WARN(get_logger(),
-                  "rtde_frequency set to %d Hz. Note: CB3 controllers support up to ~125 Hz. "
-                  "If running on a CB3 robot, this configuration may fail.",
-                  rtde_frequency_);
-    }
-
     return true;
 
   } catch (const std::exception& e) {
@@ -199,19 +192,3 @@ void RtdePublisherNode::spinOnce()
 }
 
 }  // namespace ur_rtde_publisher
-
-#ifndef UR_RTDE_PUBLISHER_BUILD_TESTING
-int main(int argc, char* argv[])
-{
-  rclcpp::init(argc, argv);
-  auto node = std::make_shared<ur_rtde_publisher::RtdePublisherNode>();
-  if (!node->configure() || !node->startRtde()) {
-    RCLCPP_FATAL(node->get_logger(), "Failed to start RTDE publisher");
-    return 1;
-  }
-  RCLCPP_INFO(node->get_logger(), "RTDE publisher node initialized successfully");
-  rclcpp::spin(node);
-  rclcpp::shutdown();
-  return 0;
-}
-#endif
