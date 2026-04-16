@@ -60,6 +60,8 @@ jobs:
           ref: ${{ inputs.ref_for_scheduled_build }}
       - run: docker network create --subnet=192.168.56.0/24 ursim_net
         if: ${{ !env.ACT }}
+      - name: Start URSim
+        run: docker run --rm -d --net ursim_net --ip 192.168.56.101 --name ursim universalrobots/ursim_e-series:latest
       - name: Cache ccache
         uses: actions/cache@v5
         with:
