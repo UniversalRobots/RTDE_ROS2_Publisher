@@ -1,20 +1,19 @@
-name: Rolling Binary Main
+name: Humble Binary Testing
 on:
   workflow_dispatch:
   pull_request:
     branches:
-      - main
+      - jazzy
   push:
     branches:
-      - main
+      - jazzy
   schedule:
     # Run every morning to detect flakiness and broken dependencies
     - cron: '17 6 * * *'
 
 jobs:
-  rolling_binary_main:
+  humble_binary_testing:
     uses: ./.github/workflows/reusable_ici.yml
     with:
-      ros_distro: rolling
-      ros_repo: main
-      ref_for_scheduled_build: main
+      ros_distro: humble
+      ros_repo: testing
