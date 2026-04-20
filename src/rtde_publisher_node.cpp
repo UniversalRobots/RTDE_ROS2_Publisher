@@ -97,10 +97,9 @@ bool RtdePublisherNode::initPublisher()
 {
   try {
     // Load publisher config
-    std::filesystem::path package_share_dir;
-    ament_index_cpp::get_package_share_directory("ur_rtde_publisher", package_share_dir);
+    std::string package_share_dir =  ament_index_cpp::get_package_share_directory("ur_rtde_publisher");
 
-    std::filesystem::path config_path = package_share_dir.string() + "/config/rtde_map.yaml";
+    std::filesystem::path config_path = package_share_dir + "/config/rtde_map.yaml";
 
     // Initialize publisher
     rtde_publisher_ = std::make_unique<RTDEPublisher>(*this, config_path.string(), tf_prefix_);
