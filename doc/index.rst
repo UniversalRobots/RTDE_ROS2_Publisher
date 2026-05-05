@@ -1,12 +1,10 @@
 .. _ur_rtde_publisher:
 
-ur_rtde_publisher
-=================
+
+.. include:: ../README.rst
 
 Overview
 --------
-
-.. include:: ../README.rst
 
 
 .. toctree::
