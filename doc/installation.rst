@@ -1,6 +1,8 @@
 Installation
 ============
 
+.. _ur_rtde_pub/installation:
+
 The `ur_rtde_publisher` package can be built from source.
 
 Building from Source

@@ -1,4 +1,3 @@
-=================
 ur_rtde_publisher
 =================
 
@@ -9,16 +8,7 @@ A ROS 2 package that provides a RTDE (Real Time Data Exchange) publisher for Uni
    This package is currently in an early development stage. At this point, we don't make any
    guarantees about ROS API stability, so the interface types for published data might change in the
    future. Hence, this package is currently not available as a pre-built binary in any ROS
-   distribution, and users need to build it from source.
-
-Architecture
------------------------
-
-The package follows the following structure:
-
-* **rtde_publisher_node:** Implements the ROS2 node. It handles parameters loading, RTDE connections setup, and the main publish loop.
-* **rtde_publisher:** Responsible for creating ROS publishers based on the RTDE recipe and the YAML mapping file.
-* **rtde_converter:** Contains utility functions to convert RTDE raw data types into ROS messages types.
+   distribution, and users need to :ref:`build it from source <ur_rtde_pub/installation>`.
 
 Usage
 -----
@@ -32,13 +22,24 @@ The node is started using the provided launch file:
      output_recipe:='["payload", "robot_mode"]' \
      rtde_frequency:=125
 
+See the documentation's :ref:`ur_rtde_pub/usage` section for more details on how to run the node and verify its operation.
+
 Parameters
-----------
+^^^^^^^^^^
 
 * ``robot_ip`` (string): IP address of the robot.
 * ``output_recipe`` (string[]): List of RTDE output variables to request and publish.
 * ``rtde_frequency`` (int, optional, default: ``500``): RTDE communication frequency in Hz.
 * ``tf_prefix`` (string, optional, default: ``""``): Optional prefix applied to the ``frame_id`` of stamped ROS 2 messages.
+
+Architecture
+------------
+
+The package follows the following structure:
+
+* **rtde_publisher_node:** Implements the ROS2 node. It handles parameters loading, RTDE connections setup, and the main publish loop.
+* **rtde_publisher:** Responsible for creating ROS publishers based on the RTDE recipe and the YAML mapping file.
+* **rtde_converter:** Contains utility functions to convert RTDE raw data types into ROS messages types.
 
 Build status
 ------------

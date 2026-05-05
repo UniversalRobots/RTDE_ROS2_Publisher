@@ -1,3 +1,5 @@
+.. _ur_rtde_pub/usage:
+
 Usage
 =====
 
@@ -103,7 +105,8 @@ is not recommended and may lead to inconsistent behavior.
 Typical Workflow
 ----------------
 
-1. Ensure your UR robot is powered on and network accessible
+1. Ensure your UR robot is powered on and network accessible. The `RTDE service should be enabled <https://docs.universal-robots.com/Universal_Robots_ROS_Documentation/rolling/doc/ur_client_library/doc/setup/robot_setup.html>`_ in
+   the robot's service settings.
 2. Launch the node: ``ros2 launch ur_rtde_publisher rtde_publisher.launch.xml robot_ip:=<YOUR_ROBOT_IP> output_recipe:='["payload", "robot_mode"]'``
 3. Monitor published topics: ``ros2 topic list`` and ``ros2 topic echo <topic_name>``
 4. Integrate published data into your ROS 2 application

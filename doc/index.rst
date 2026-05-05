@@ -13,6 +13,6 @@ Overview
    :caption: Contents
    :maxdepth: 4
 
+   usage
    architecture
    installation
-   usage
