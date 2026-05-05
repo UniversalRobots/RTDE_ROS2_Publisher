@@ -6,7 +6,7 @@ ur_rtde_publisher
 Overview
 --------
 
-.. include:: ../../README.rst
+.. include:: ../README.rst
 
 
 .. toctree::
