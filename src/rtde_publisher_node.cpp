@@ -63,6 +63,8 @@ bool RtdePublisherNode::loadParameters()
     robot_ip_ = declare_parameter<std::string>("robot_ip");
     rtde_frequency_ = declare_parameter<int>("rtde_frequency", 500);
     tf_prefix_ = declare_parameter<std::string>("tf_prefix", "");
+    use_robot_timestamp_ = declare_parameter<bool>("use_robot_timestamp", false);
+    t_delay_ = declare_parameter<double>("t_delay", 0.0);
 
     // Verify parameters
     if (output_recipe_.empty() || robot_ip_.empty()) {
@@ -181,6 +183,24 @@ void RtdePublisherNode::spinOnce()
   }
 
   rclcpp::Time packet_time = this->now();
+
+  if (use_robot_timestamp_) {
+    double T_n;
+
+    if (pkg_->getData<double>("timestamp", T_n)) {
+      if (!first_package_received_) {
+        t_0_ = packet_time - rclcpp::Duration::from_seconds(t_delay_);
+        T_0_ = T_n;
+        first_package_received_ = true;
+
+        RCLCPP_INFO(this->get_logger(),
+                    "Time synchronization initialized using robot timestamp with a delay of %.4f seconds.", t_delay_);
+      }
+
+      double dt = T_n - T_0_;
+      packet_time = t_0_ + rclcpp::Duration::from_seconds(dt);
+    }
+  }
 
   try {
     rtde_publisher_->publish(*pkg_, packet_time);

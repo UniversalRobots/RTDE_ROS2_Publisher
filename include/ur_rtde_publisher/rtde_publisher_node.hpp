@@ -116,6 +116,21 @@ private:
   /// @brief TF prefix for the frame IDs published.
   std::string tf_prefix_;
 
+  /// @brief Parameter flag to enable using the robot's hardware timestamp.
+  bool use_robot_timestamp_ = false;
+
+  /// @brief Estimated communication delay (in seconds) subtracted from the initial ROS timestamp.
+  double t_delay_ = 0.0;
+
+  /// @brief Flag to track if the first RTDE package has been received to initialize time synchronization.
+  bool first_package_received_ = false;
+
+  /// @brief Initial ROS time reference, adjusted by the communication delay.
+  rclcpp::Time t_0_;
+
+  /// @brief Initial robot controller timestamp reference since controller startup [s].
+  double T_0_ = 0.0;
+
   /// @brief Keys actually created and active after validating with the YAML mapping.
   std::vector<std::string> effective_keys_;
 
