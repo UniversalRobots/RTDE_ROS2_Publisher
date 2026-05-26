@@ -15,7 +15,9 @@ Launch the RTDE publisher node using the provided launch file:
    ros2 launch ur_rtde_publisher rtde_publisher.launch.xml \
      robot_ip:=192.168.56.101 \
      output_recipe:='["payload", "robot_mode"]' \
-     rtde_frequency:=125
+     rtde_frequency:=125 \
+     use_robot_timestamp:=true \
+     t_delay:=0.004 
 
 After launching, verify the node is running:
 
@@ -81,6 +83,24 @@ The following parameters control the node behavior:
   *Example:* setting ``tf_prefix:=robot1`` and the default ``frame_id`` of ``base``
   results in ``robot1/base``.
 
+- ``use_robot_timestamp`` (bool, optional, default: ``false``)
+
+  When enabled, the node uses the robot controller's internal hardware clock to stamp 
+  ROS 2 messages instead of the host PC's local processing time.
+
+  The timeline is reconstructed by anchoring the first received ROS time reference with 
+  the first robot timestamp, and advancing subsequent messages using the robot's elapsed time.
+
+  *Example:* ``use_robot_timestamp:=true``
+
+- ``t_delay`` (double, optional, default: ``0.0``)
+
+  Constant time offset in seconds (s) to compensate for network latency between the robot and the ROS PC.
+
+  This parameter is only effective when ``use_robot_timestamp`` is enabled. It shifts the reconstructed timeline backward, allowing the ROS timestamps to better approximate the exact moment the physical measurement occurred on the robot hardware.
+
+  *Example:* ``t_delay:=0.004`` to compensate for an estimated 4 ms communication delay.
+
 
 
 Configuration
@@ -130,12 +150,3 @@ There are several aspects users should be aware of when using the RTDE ROS2 Publ
   low latency over delivery reliability and may result in individual messages being dropped.
   This behavior is expected and acceptable for high-frequency RTDE data streams, where
   newer samples are continuously published.
-
-* **Timestamp origin**:
-  By default, published ROS 2 messages are timestamped on the external PC running
-  the node, at the time RTDE data is received and published. These timestamps
-  therefore reflect host‑side reception time rather than the exact time at which
-  the data was produced by the robot controller.
-  If precise controller‑side timing is required, users may include the RTDE
-  ``timestamp`` variable in the ``output_recipe`` and use it as a reference for
-  time synchronization or post‑processing.

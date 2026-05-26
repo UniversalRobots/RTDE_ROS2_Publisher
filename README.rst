@@ -20,7 +20,9 @@ The node is started using the provided launch file:
    ros2 launch ur_rtde_publisher rtde_publisher.launch.xml \
      robot_ip:=192.168.56.101 \
      output_recipe:='["payload", "robot_mode"]' \
-     rtde_frequency:=125
+     rtde_frequency:=125 \
+     use_robot_timestamp:=true \
+     t_delay:=0.004 
 
 See the documentation's `usage <https://docs.universal-robots.com/Universal_Robots_ROS_Documentation/rolling/doc/ur_rtde_ros2_publisher/doc/usage.html>`_ section for more details on how to run the node and verify its operation.
 
@@ -31,6 +33,8 @@ Parameters
 * ``output_recipe`` (string[]): List of RTDE output variables to request and publish.
 * ``rtde_frequency`` (int, optional, default: ``500``): RTDE communication frequency in Hz.
 * ``tf_prefix`` (string, optional, default: ``""``): Optional prefix applied to the ``frame_id`` of stamped ROS 2 messages.
+* ``use_robot_timestamp`` (bool, optional, default: ``false``): If true, uses the robot's hardware clock.
+* ``t_delay`` (double, optional, default: ``0.0``): Network latency compensation in seconds ``[s]`` to align the data timeline with the actual physical measurement time.
 
 Architecture
 ------------
