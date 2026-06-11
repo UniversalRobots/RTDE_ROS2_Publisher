@@ -31,6 +31,8 @@ POSSIBILITY OF SUCH DAMAGE. -->
   <arg name="output_recipe" default="[]"/>
   <arg name="rtde_frequency" default="500"/>
   <arg name="tf_prefix" default=""/>
+  <arg name="use_robot_timestamp" default="false"/>
+  <arg name="t_delay" default="0.0"/>
 
   <node
     pkg="ur_rtde_publisher"
@@ -42,5 +44,7 @@ POSSIBILITY OF SUCH DAMAGE. -->
     <param name="output_recipe" value="$(var output_recipe)"/>
     <param name="rtde_frequency" value="$(var rtde_frequency)"/>
     <param name="tf_prefix" value="$(var tf_prefix)"/>
+    <param name="use_robot_timestamp" value="$(var use_robot_timestamp)"/>
+    <param name="t_delay" value="$(var t_delay)"/>
   </node>
 </launch>
