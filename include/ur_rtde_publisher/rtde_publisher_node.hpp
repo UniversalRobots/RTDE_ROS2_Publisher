@@ -31,7 +31,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include <ur_client_library/rtde/rtde_client.h>
 #include "ur_rtde_publisher/rtde_publisher.hpp"
-#include "ament_index_cpp/get_package_share_directory.hpp"
 #include <ur_client_library/log.h>
 #include <ur_client_library/types.h>
 

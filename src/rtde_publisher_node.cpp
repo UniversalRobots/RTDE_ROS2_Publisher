@@ -27,6 +27,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include "ur_rtde_publisher/rtde_publisher_node.hpp"
+#include <ament_index_cpp/get_package_share_path.hpp>
 
 using namespace std::chrono_literals;
 
@@ -99,10 +100,9 @@ bool RtdePublisherNode::initPublisher()
 {
   try {
     // Load publisher config
-    std::filesystem::path package_share_dir;
-    ament_index_cpp::get_package_share_directory("ur_rtde_publisher", package_share_dir);
+    std::filesystem::path package_share_path = ament_index_cpp::get_package_share_path("ur_rtde_publisher");
 
-    std::filesystem::path config_path = package_share_dir.string() + "/config/rtde_map.yaml";
+    std::filesystem::path config_path = package_share_path.string() + "/config/rtde_map.yaml";
 
     // Initialize publisher
     rtde_publisher_ = std::make_unique<RTDEPublisher>(*this, config_path.string(), tf_prefix_);
