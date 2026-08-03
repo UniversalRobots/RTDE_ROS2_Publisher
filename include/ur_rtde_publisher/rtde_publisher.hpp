@@ -52,9 +52,10 @@
 #include <example_interfaces/msg/int32_multi_array.hpp>
 #include <example_interfaces/msg/float64_multi_array.hpp>
 #include <sensor_msgs/msg/temperature.hpp>
-#include <map>
-#include <memory>
 #include <functional>
+#include <string>
+#include <unordered_set>
+#include <vector>
 #include <yaml-cpp/yaml.h>
 
 namespace ur_rtde_publisher
