@@ -49,17 +49,19 @@ Build status
 ------------
 
 .. list-table::
-   :widths: 20 20 20 20 20
+   :widths: 16 16 16 16 16 16
    :header-rows: 1
 
    * - 
      - Humble
      - Jazzy
      - Kilted
+     - Lyrical
      - Rolling
    * - Branch
      - `jazzy <https://github.com/UniversalRobots/RTDE_ROS2_Publisher/tree/jazzy>`_
      - `jazzy <https://github.com/UniversalRobots/RTDE_ROS2_Publisher/tree/jazzy>`_
+     - `main <https://github.com/UniversalRobots/RTDE_ROS2_Publisher/tree/main>`_
      - `main <https://github.com/UniversalRobots/RTDE_ROS2_Publisher/tree/main>`_
      - `main <https://github.com/UniversalRobots/RTDE_ROS2_Publisher/tree/main>`_
    * - Build status main
@@ -72,6 +74,9 @@ Build status
      - .. image:: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/kilted_binary_main.yml/badge.svg?event=schedule
           :target: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/kilted_binary_main.yml?query=event%3Aschedule++
           :alt: Kilted Binary Main
+     - .. image:: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/lyrical_binary_main.yml/badge.svg?event=schedule
+          :target: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/lyrical_binary_main.yml?query=event%3Aschedule++
+          :alt: Lyrical Binary Main
      - .. image:: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/rolling_binary_main.yml/badge.svg?event=schedule
           :target: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/rolling_binary_main.yml?query=event%3Aschedule++
           :alt: Rolling Binary Main
@@ -85,6 +90,9 @@ Build status
      - .. image:: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/kilted_binary_testing.yml/badge.svg?event=schedule
           :target: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/kilted_binary_testing.yml?query=event%3Aschedule++
           :alt: Kilted Binary Testing
+     - .. image:: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/lyrical_binary_testing.yml/badge.svg?event=schedule
+          :target: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/lyrical_binary_testing.yml?query=event%3Aschedule++
+          :alt: Lyrical Binary Testing
      - .. image:: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/rolling_binary_testing.yml/badge.svg?event=schedule
           :target: https://github.com/UniversalRobots/RTDE_ROS2_Publisher/actions/workflows/rolling_binary_testing.yml?query=event%3Aschedule++
           :alt: Rolling Binary Testing
