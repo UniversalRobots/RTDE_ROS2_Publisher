@@ -16,6 +16,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(ur_client_library REQUIRED)
 find_package(ur_dashboard_msgs REQUIRED)
+find_package(urinterfaces REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
 add_library(${PROJECT_NAME}_lib
@@ -37,6 +38,7 @@ target_link_libraries(${PROJECT_NAME}_lib PUBLIC
   ${sensor_msgs_TARGETS}
   ${builtin_interfaces_TARGETS}
   ${ur_dashboard_msgs_TARGETS}
+  ${urinterfaces_TARGETS}
   sensor_msgs::sensor_msgs_library
   ur_client_library::urcl
   yaml-cpp

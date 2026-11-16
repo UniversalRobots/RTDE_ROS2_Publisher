@@ -136,9 +136,9 @@ rtde_variables:
     variables:
       - "tool_temperature"
 
-  VECTOR6D_to_Float64MultiArray:
+  VECTOR6D_to_DoubleMultiArrayStamped:
     rtde_type: "VECTOR6D"
-    output_type: "example_interfaces/Float64MultiArray"
+    output_type: "urinterfaces/DoubleMultiArrayStamped"
     variables:
       - "target_q"
       - "target_qd"

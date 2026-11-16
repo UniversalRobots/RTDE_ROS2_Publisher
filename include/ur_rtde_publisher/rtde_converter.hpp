@@ -46,8 +46,8 @@
 #include <example_interfaces/msg/byte_multi_array.hpp>
 #include <example_interfaces/msg/float64.hpp>
 #include <example_interfaces/msg/bool.hpp>
-#include <example_interfaces/msg/float64_multi_array.hpp>
 #include <example_interfaces/msg/int32_multi_array.hpp>
+#include <urinterfaces/msg/double_multi_array_stamped.hpp>
 #include <sensor_msgs/msg/temperature.hpp>
 #include <tf2/LinearMath/Quaternion.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
@@ -139,7 +139,9 @@ public:
                                                                  const std::string& frame_id,
                                                                  const rclcpp::Time& packet_time);
 
-  static example_interfaces::msg::Float64MultiArray vector6dToFloat64MultiArray(const std::array<double, 6>& data);
+  static urinterfaces::msg::DoubleMultiArrayStamped
+  vector6dToDoubleMultiArrayStamped(const std::array<double, 6>& data, const std::string& frame_id,
+                                    const rclcpp::Time& packet_time);
 
   static example_interfaces::msg::ByteMultiArray uint32ToByteMultiArray(const uint32_t value);
 

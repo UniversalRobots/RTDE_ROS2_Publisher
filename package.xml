@@ -21,6 +21,7 @@
   <depend>tf2_ros</depend>
   <depend>ur_client_library</depend>
   <depend>ur_dashboard_msgs</depend>
+  <depend>urinterfaces</depend>
   <depend>yaml-cpp</depend>
 
 
