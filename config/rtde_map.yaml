@@ -191,9 +191,14 @@ rtde_variables:
     rtde_type: "UINT32"
     output_type: "example_interfaces/UInt32"
     variables:
-      - "runtime_state"
       - "tool_mode"
       - "script_control_line"
+
+  UINT32_to_RUNTIME_STATE:
+    rtde_type: "UINT32"
+    output_type: "urinterfaces/RuntimeState"
+    variables:
+      - "runtime_state"
 
   UINT8_to_UINT8:
     rtde_type: "UINT8"

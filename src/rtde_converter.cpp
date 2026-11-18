@@ -181,4 +181,12 @@ example_interfaces::msg::Int32MultiArray RTDEConverter::vector6intToMsg(const st
   return msg;
 }
 
+urinterfaces::msg::RuntimeState RTDEConverter::uint32ToRuntimeState(const uint32_t value, const rclcpp::Time& packet_time)
+{
+  urinterfaces::msg::RuntimeState msg;
+  msg.header.stamp = packet_time;
+  msg.data = value;
+  return msg;
+}
+
 }  // namespace ur_rtde_publisher

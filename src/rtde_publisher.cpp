@@ -529,6 +529,17 @@ bool RTDEPublisher::createPublisher(ActiveVariable& av)
     RCLCPP_INFO(node_.get_logger(), "Created Int32MultiArray publisher for %s on topic %s", av.name.c_str(),
                 av.config.topic.c_str());
 
+  } else if (av.config.output_type == "urinterfaces/RuntimeState") {
+    auto pub = node_.create_publisher<urinterfaces::msg::RuntimeState>(av.config.topic, qos);
+
+    av.publish = [pub, name](const urcl::rtde_interface::DataPackage& pkg, const rclcpp::Time& t) {
+      uint32_t value = 0;
+      if (!pkg.getData(name, value)) {
+        throw std::runtime_error("Failed to get UINT32 data for " + name);
+      }
+      auto msg = RTDEConverter::uint32ToRuntimeState(value, t);
+      pub->publish(msg);
+    };
   } else {
     RCLCPP_WARN(node_.get_logger(), "Unknown output type: %s for variable %s", av.config.output_type.c_str(),
                 av.name.c_str());
