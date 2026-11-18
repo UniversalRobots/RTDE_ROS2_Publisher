@@ -136,9 +136,9 @@ rtde_variables:
     variables:
       - "tool_temperature"
 
-  VECTOR6D_to_Float64MultiArray:
+  VECTOR6D_to_DoubleMultiArrayStamped:
     rtde_type: "VECTOR6D"
-    output_type: "example_interfaces/Float64MultiArray"
+    output_type: "urinterfaces/DoubleMultiArrayStamped"
     variables:
       - "target_q"
       - "target_qd"
@@ -191,9 +191,14 @@ rtde_variables:
     rtde_type: "UINT32"
     output_type: "example_interfaces/UInt32"
     variables:
-      - "runtime_state"
       - "tool_mode"
       - "script_control_line"
+
+  UINT32_to_RUNTIME_STATE:
+    rtde_type: "UINT32"
+    output_type: "urinterfaces/RuntimeState"
+    variables:
+      - "runtime_state"
 
   UINT8_to_UINT8:
     rtde_type: "UINT8"

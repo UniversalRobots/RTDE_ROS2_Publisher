@@ -50,7 +50,8 @@
 #include <ur_dashboard_msgs/msg/safety_mode.hpp>
 #include <ur_dashboard_msgs/msg/safety_status.hpp>
 #include <example_interfaces/msg/int32_multi_array.hpp>
-#include <example_interfaces/msg/float64_multi_array.hpp>
+#include <urinterfaces/msg/double_multi_array_stamped.hpp>
+#include <urinterfaces/msg/runtime_state.hpp>
 #include <sensor_msgs/msg/temperature.hpp>
 #include <functional>
 #include <string>

@@ -499,19 +499,19 @@ bool RTDEPublisher::createPublisher(ActiveVariable& av)
     RCLCPP_INFO(node_.get_logger(), "Created Temperature publisher for %s on topic %s", av.name.c_str(),
                 av.config.topic.c_str());
 
-  } else if (av.config.output_type == "example_interfaces/Float64MultiArray") {
-    auto pub = node_.create_publisher<example_interfaces::msg::Float64MultiArray>(av.config.topic, qos);
+  } else if (av.config.output_type == "urinterfaces/DoubleMultiArrayStamped") {
+    auto pub = node_.create_publisher<urinterfaces::msg::DoubleMultiArrayStamped>(av.config.topic, qos);
 
-    av.publish = [pub, name](const urcl::rtde_interface::DataPackage& pkg, const rclcpp::Time&) {
+    av.publish = [pub, name, frame](const urcl::rtde_interface::DataPackage& pkg, const rclcpp::Time& t) {
       std::array<double, 6> data;
       if (!pkg.getData(name, data)) {
         throw std::runtime_error("Failed to get VECTOR6D data for " + name);
       }
-      auto msg = RTDEConverter::vector6dToFloat64MultiArray(data);
+      auto msg = RTDEConverter::vector6dToDoubleMultiArrayStamped(data, frame, t);
       pub->publish(msg);
     };
 
-    RCLCPP_INFO(node_.get_logger(), "Created Float64MultiArray publisher for %s on topic %s", av.name.c_str(),
+    RCLCPP_INFO(node_.get_logger(), "Created DoubleMultiArrayStamped publisher for %s on topic %s", av.name.c_str(),
                 av.config.topic.c_str());
 
   } else if (av.config.output_type == "example_interfaces/Int32MultiArray") {
@@ -529,6 +529,17 @@ bool RTDEPublisher::createPublisher(ActiveVariable& av)
     RCLCPP_INFO(node_.get_logger(), "Created Int32MultiArray publisher for %s on topic %s", av.name.c_str(),
                 av.config.topic.c_str());
 
+  } else if (av.config.output_type == "urinterfaces/RuntimeState") {
+    auto pub = node_.create_publisher<urinterfaces::msg::RuntimeState>(av.config.topic, qos);
+
+    av.publish = [pub, name](const urcl::rtde_interface::DataPackage& pkg, const rclcpp::Time& t) {
+      uint32_t value = 0;
+      if (!pkg.getData(name, value)) {
+        throw std::runtime_error("Failed to get UINT32 data for " + name);
+      }
+      auto msg = RTDEConverter::uint32ToRuntimeState(value, t);
+      pub->publish(msg);
+    };
   } else {
     RCLCPP_WARN(node_.get_logger(), "Unknown output type: %s for variable %s", av.config.output_type.c_str(),
                 av.name.c_str());

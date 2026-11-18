@@ -72,7 +72,7 @@ The following parameters control the node behavior:
 - ``tf_prefix`` (string, optional, default: ``""``)
 
   Optional prefix applied to the ``frame_id`` field of stamped ROS 2 messages
-  (e.g. ``PoseStamped``, ``TwistStamped``, ``WrenchStamped``).
+  (e.g. ``PoseStamped``, ``TwistStamped``, ``WrenchStamped``, ``DoubleMultiArrayStamped``).
 
   This parameter allows users to adapt the published ``frame_id`` values to their
   TF tree or multi‑robot setups without modifying the default YAML configuration
@@ -115,7 +115,8 @@ In normal usage, this file should not be modified, as it reflects the supported 
 variables and their corresponding ROS 2 message mappings.
 
 End users may optionally customize the configuration to adjust the ``frame_id`` used
-for stamped ROS 2 messages (e.g. ``PoseStamped``, ``TwistStamped``, ``WrenchStamped``),
+for stamped ROS 2 messages (e.g. ``PoseStamped``, ``TwistStamped``, ``WrenchStamped``,
+``DoubleMultiArrayStamped``),
 in order to match their TF tree or application-specific coordinate frames.
 
 As an alternative to editing the YAML file, the ``tf_prefix`` parameter can be used to
